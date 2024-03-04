@@ -3464,12 +3464,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1677791305}
-  - component: {fileID: 1677791304}
   - component: {fileID: 1677791309}
   - component: {fileID: 1677791308}
   - component: {fileID: 1677791307}
   - component: {fileID: 1677791306}
   - component: {fileID: 1677791310}
+  - component: {fileID: 1677791312}
+  - component: {fileID: 1677791311}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -3477,20 +3478,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1677791304
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1677791303}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ccd786910b8d7ce42ac7d39397b39bfb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 4
-  playerRigid: {fileID: 1677791308}
 --- !u!4 &1677791305
 Transform:
   m_ObjectHideFlags: 0
@@ -3652,8 +3639,8 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1677791304}
-        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+      - m_Target: {fileID: 1677791311}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
         m_MethodName: onMove
         m_Mode: 0
         m_Arguments:
@@ -3668,8 +3655,8 @@ MonoBehaviour:
     m_ActionName: PC Player Action Map/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1677791304}
-        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+      - m_Target: {fileID: 1677791311}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
         m_MethodName: onDash
         m_Mode: 0
         m_Arguments:
@@ -3682,8 +3669,57 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 12a6899a-1517-4cda-bd0e-6041007563f9
     m_ActionName: PC Player Action Map/Dash[/Keyboard/space]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1677791311}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: onShot
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 4f40b058-f28f-464a-a7ca-8753a83b4e96
+    m_ActionName: PC Player Action Map/Shot[/Mouse/leftButton]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: PC
   m_DefaultActionMap: PC Player Action Map
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &1677791311
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1677791303}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf30fa94a6636824d89fbc2cbb844ddb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerRigid: {fileID: 1677791308}
+--- !u!114 &1677791312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1677791303}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccd786910b8d7ce42ac7d39397b39bfb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHP: 0
+  currentHP: 0
+  maxStamina: 0
+  currentStamina: 0
+  maxMP: 0
+  currentMP: 0
+  defense: 0
+  moveSpeed: 4

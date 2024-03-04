@@ -22,6 +22,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Shot",
+                    "type": "Button",
+                    "id": "4f40b058-f28f-464a-a7ca-8753a83b4e96",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -88,6 +97,17 @@
                     "processors": "",
                     "groups": "PC",
                     "action": "Dash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8ee0c2da-ebb4-4277-8c12-288fa603d4cc",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "Hold(duration=1,pressPoint=0.3),Press(pressPoint=0.3,behavior=1)",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "Shot",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
