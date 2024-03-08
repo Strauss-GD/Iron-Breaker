@@ -12,13 +12,15 @@ public class PlayerController : MonoBehaviour
   
   //Animation
   Animator anim;
-  int h, v;
+  float h, v;
+  bool isHorizonMove;
+
   public Vector2 movementInput { get; private set; }
 
   [SerializeField] private Rigidbody2D playerRigid;
   
 
-  void Start()
+  void Awake()
   {
     player = GetComponent<Player>();
     playerRigid = GetComponent<Rigidbody2D>();
@@ -95,8 +97,30 @@ public class PlayerController : MonoBehaviour
   //Animation
   void PlayerAnimation()
   {
-    anim.SetInteger("hAxisRaw", h);
-    anim.SetInteger("vAxisRaw", v);
+    h = Input.GetAxisRaw("Horizontal");
+    v = Input.GetAxisRaw("Vertical");
+/*
+    bool hDown = Input.GetButtonDown("Horizontal");
+    bool vDown = Input.GetButtonDown("Vertical");
+    bool hUp = Input.GetButtonUp("Horizontal");
+    bool vUp = Input.GetButtonUp("Vertical");
+
+    if (hDown || vUp) isHorizonMove = true;
+    else if (vDown || hUp) isHorizonMove = false;
+    else if (hUp || vUp) isHorizonMove = h != 0;
+    */
+
+    if (anim.GetInteger("hAxisRaw") != h)
+    {
+      anim.SetBool("isChange", true);
+      anim.SetInteger("hAxisRaw", (int)h);
+    }
+    else if (anim.GetInteger("vAxisRaw") != v)
+    {
+      anim.SetBool("isChange", true);
+      anim.SetInteger("vAxisRaw", (int)v);
+    }
+    else anim.SetBool("isChange", false);
   }
 
 

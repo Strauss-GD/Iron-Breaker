@@ -3670,7 +3670,7 @@ MonoBehaviour:
   m_DefaultControlScheme: PC
   m_DefaultActionMap: PC Player Action Map
   m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
+  m_Camera: {fileID: 519420031}
 --- !u!114 &1677791311
 MonoBehaviour:
   m_ObjectHideFlags: 0
