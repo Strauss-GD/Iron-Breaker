@@ -1181,7 +1181,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1677791305}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &519420033
@@ -1199,7 +1199,7 @@ MonoBehaviour:
   m_AssetsPPU: 16
   m_RefResolutionX: 320
   m_RefResolutionY: 180
-  m_UpscaleRT: 0
+  m_UpscaleRT: 1
   m_PixelSnapping: 0
   m_CropFrameX: 0
   m_CropFrameY: 0
@@ -3417,7 +3417,7 @@ GameObject:
   - component: {fileID: 1583656348}
   - component: {fileID: 1583656347}
   m_Layer: 0
-  m_Name: Grid
+  m_Name: Map
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3453,7 +3453,7 @@ Transform:
   - {fileID: 230180003}
   - {fileID: 296790974}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1677791303
 GameObject:
@@ -3465,9 +3465,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1677791305}
   - component: {fileID: 1677791309}
+  - component: {fileID: 1677791313}
   - component: {fileID: 1677791308}
   - component: {fileID: 1677791307}
-  - component: {fileID: 1677791306}
   - component: {fileID: 1677791310}
   - component: {fileID: 1677791312}
   - component: {fileID: 1677791311}
@@ -3489,30 +3489,11 @@ Transform:
   m_LocalPosition: {x: -8.44, y: 4.52, z: -0.014346191}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 519420032}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &1677791306
-Animator:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1677791303}
-  m_Enabled: 0
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!61 &1677791307
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3723,3 +3704,23 @@ MonoBehaviour:
   currentMP: 0
   defense: 0
   moveSpeed: 4
+--- !u!95 &1677791313
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1677791303}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 54b6d655f3f62d146b63349c256e1785, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

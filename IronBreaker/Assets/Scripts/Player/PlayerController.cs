@@ -9,6 +9,10 @@ using UnityEngine.InputSystem.Interactions;
 public class PlayerController : MonoBehaviour
 {
   protected Player player;
+  
+  //Animation
+  Animator anim;
+  int h, v;
   public Vector2 movementInput { get; private set; }
 
   [SerializeField] private Rigidbody2D playerRigid;
@@ -18,8 +22,18 @@ public class PlayerController : MonoBehaviour
   {
     player = GetComponent<Player>();
     playerRigid = GetComponent<Rigidbody2D>();
+    anim = GetComponent<Animator>();
   }
 
+  void Update()
+  {
+    PlayerAnimation();
+  }
+
+  void FixedUpdate()
+  {
+    
+  }
 
   //Input System에 의한 이동
   public void onMove(InputAction.CallbackContext context)
@@ -69,7 +83,6 @@ public class PlayerController : MonoBehaviour
     return Vector2.zero;
   }
 
-
   //Input System에 의한 대쉬
   public void onDash(InputAction.CallbackContext context)
   {
@@ -79,11 +92,11 @@ public class PlayerController : MonoBehaviour
     }
   }
 
-  //애니메이션 추후 추가 예정
+  //Animation
   void PlayerAnimation()
   {
-    //https://www.youtube.com/watch?v=bZVa6C6vRBQ&list=PLO-mt5Iu5TeYfyXsi6kzHK8kfjPvadC5u&index=2&ab_channel=%EA%B3%A8%EB%93%9C%EB%A9%94%ED%83%88
-    //참고
+    anim.SetInteger("hAxisRaw", h);
+    anim.SetInteger("vAxisRaw", v);
   }
 
 
