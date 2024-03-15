@@ -13,10 +13,14 @@ public class PlayerController : MonoBehaviour
   //Animation
   Animator anim;
   float h, v;
-  bool isHorizonMove;
 
+  //Move
   public Vector2 movementInput { get; private set; }
 
+  //Mouse Info
+  Vector3 target;
+
+  //Physics
   [SerializeField] private Rigidbody2D playerRigid;
   
 
@@ -27,8 +31,14 @@ public class PlayerController : MonoBehaviour
     anim = GetComponent<Animator>();
   }
 
+  void Start()
+  {
+    
+  }
+
   void Update()
   {
+    RotationPlayer();
     PlayerAnimation();
   }
 
@@ -62,27 +72,25 @@ public class PlayerController : MonoBehaviour
       //기본 공격
       else if (context.interaction is PressInteraction)
       {
-
+        
       }
     }
   }
 
   // 마우스 좌표 따기
-  protected Vector2 GetMouseWorldPosition()
+  protected Vector3 GetMouseWorldPosition()
   {
-    Vector2 mousePosition = Mouse.current.position.ReadValue();
-    Ray ray = Camera.main.ScreenPointToRay(mousePosition);
-    Debug.DrawRay(ray.origin, ray.direction * 1000f, Color.red, 5f);  // Raycast 시각화
+    Vector2 mousePos = Input.mousePosition;
+    Vector3 target = Camera.main.ScreenToWorldPoint(mousePos);
+    return target;
+  }
 
-    if (Physics.Raycast(ray, out RaycastHit HitInfo, Mathf.Infinity))
-    {
-      Vector2 target = HitInfo.point;
-      Vector2 myPosition = new Vector3(transform.position.x, transform.position.y);
-      target.Set(target.x, target.y);
-      return (target - myPosition).normalized;
-    }
-
-    return Vector2.zero;
+  //마우스 방향으로 캐릭터 회전
+  void RotationPlayer()
+  {
+    Vector2 newPos = GetMouseWorldPosition() - transform.position;
+    float rotZ = Mathf.Atan2(newPos.y, newPos.x) * Mathf.Rad2Deg;
+    transform.rotation = Quaternion.Euler(0, 0, rotZ);
   }
 
   //Input System에 의한 대쉬
