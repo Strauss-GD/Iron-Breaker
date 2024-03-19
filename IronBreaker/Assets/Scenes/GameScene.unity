@@ -3470,6 +3470,52 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1632619121
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1632619122}
+  - component: {fileID: 1632619123}
+  m_Layer: 0
+  m_Name: Harpoon
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1632619122
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1632619121}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.192, y: -0.251, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1677791305}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1632619123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1632619121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b61852877038cf428dacc8fa715d77e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectile: {fileID: 1142235622315988422, guid: 0410020cf6b00d449840f4a62573c9f0, type: 3}
+  firePoint: {fileID: 1632619122}
 --- !u!1 &1677791303
 GameObject:
   m_ObjectHideFlags: 0
@@ -3488,7 +3534,7 @@ GameObject:
   - component: {fileID: 1677791311}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3504,7 +3550,8 @@ Transform:
   m_LocalPosition: {x: -8.44, y: 4.52, z: -0.014346191}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1632619122}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3697,6 +3744,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf30fa94a6636824d89fbc2cbb844ddb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  harpoon: {fileID: 1632619123}
   playerRigid: {fileID: 1677791308}
 --- !u!114 &1677791312
 MonoBehaviour:
@@ -3710,13 +3758,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccd786910b8d7ce42ac7d39397b39bfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHP: 0
-  currentHP: 0
-  maxStamina: 0
-  currentStamina: 0
-  maxMP: 0
-  currentMP: 0
-  defense: 0
+  maxHP: 100
+  currentHP: 100
+  maxStamina: 100
+  currentStamina: 100
+  maxMP: 100
+  currentMP: 100
+  defense: 10
   moveSpeed: 4
 --- !u!95 &1677791313
 Animator:

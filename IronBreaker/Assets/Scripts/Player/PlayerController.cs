@@ -9,6 +9,7 @@ using UnityEngine.InputSystem.Interactions;
 public class PlayerController : MonoBehaviour
 {
   protected Player player;
+  [SerializeField] Harpoon harpoon;
   
   //Animation
   Animator anim;
@@ -59,7 +60,7 @@ public class PlayerController : MonoBehaviour
   }
 
 
-  //Input System에 의한 공격과 강공격
+  //Input System에 의한 사격과 차징 사격
   public void onShot(InputAction.CallbackContext context)
   {
     if (context.performed)
@@ -67,12 +68,12 @@ public class PlayerController : MonoBehaviour
       //차지 공격
       if (context.interaction is HoldInteraction)
       {
-
+        harpoon.CreateProjectile();
       }
       //기본 공격
       else if (context.interaction is PressInteraction)
       {
-        
+        harpoon.CreateProjectile();
       }
     }
   }
