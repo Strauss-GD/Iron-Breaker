@@ -10,8 +10,9 @@ public class PlayerController : MonoBehaviour
 {
   protected Player player;
   [SerializeField] Harpoon harpoon;
-  
+
   //Animation
+  private SpriteRenderer mySpriteRender;
   Animator anim;
   float h, v;
 
@@ -23,12 +24,12 @@ public class PlayerController : MonoBehaviour
 
   //Physics
   [SerializeField] private Rigidbody2D playerRigid;
-  
 
   void Awake()
   {
     player = GetComponent<Player>();
     playerRigid = GetComponent<Rigidbody2D>();
+    mySpriteRender = GetComponent<SpriteRenderer>();
     anim = GetComponent<Animator>();
   }
 
@@ -39,13 +40,13 @@ public class PlayerController : MonoBehaviour
 
   void Update()
   {
-    RotationPlayer();
+    //RotationPlayer();
     PlayerAnimation();
   }
 
   void FixedUpdate()
   {
-    
+    //AdjustPlayerFacingDirection();
   }
 
   //Input System에 의한 이동
@@ -59,7 +60,6 @@ public class PlayerController : MonoBehaviour
     }
   }
 
-
   //Input System에 의한 사격과 차징 사격
   public void onShot(InputAction.CallbackContext context)
   {
@@ -68,7 +68,7 @@ public class PlayerController : MonoBehaviour
       //차지 공격
       if (context.interaction is HoldInteraction)
       {
-        harpoon.CreateProjectile();
+        harpoon.CreateChargedProjectile();
       }
       //기본 공격
       else if (context.interaction is PressInteraction)
@@ -82,12 +82,12 @@ public class PlayerController : MonoBehaviour
   protected Vector3 GetMouseWorldPosition()
   {
     Vector2 mousePos = Input.mousePosition;
-    Vector3 target = Camera.main.ScreenToWorldPoint(mousePos);
+    Vector3 target = Camera.main.WorldToScreenPoint(mousePos);
     return target;
   }
 
   //마우스 방향으로 캐릭터 회전
-  void RotationPlayer()
+  private void RotationPlayer()
   {
     Vector2 newPos = GetMouseWorldPosition() - transform.position;
     float rotZ = Mathf.Atan2(newPos.y, newPos.x) * Mathf.Rad2Deg;
@@ -103,12 +103,27 @@ public class PlayerController : MonoBehaviour
     }
   }
 
+  //마우스 방향에 따른 플레이어 대면 방향 조정(현재 사용안함)
+  private void AdjustPlayerFacingDirection()
+  {
+    Vector3 mousePos = Input.mousePosition;
+    Vector3 target = Camera.main.WorldToScreenPoint(transform.position);
+    if(mousePos.x < target.x)
+    {
+      mySpriteRender.flipX = true;
+    }
+    else
+    {
+      mySpriteRender.flipX = false;
+    }
+  }
+
   //Animation
   void PlayerAnimation()
   {
     h = Input.GetAxisRaw("Horizontal");
     v = Input.GetAxisRaw("Vertical");
-/*
+    /*
     bool hDown = Input.GetButtonDown("Horizontal");
     bool vDown = Input.GetButtonDown("Vertical");
     bool hUp = Input.GetButtonUp("Horizontal");

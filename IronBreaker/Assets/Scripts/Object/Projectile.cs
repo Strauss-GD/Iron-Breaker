@@ -15,6 +15,12 @@ public class Projectile : MonoBehaviour
     Invoke("DestroyProjectTile", lifeTime);
   }
 
+  public void OnFire(Vector3 vec)
+  {
+    rigid.velocity = vec * speed;
+    Invoke("DestroyProjectTile", lifeTime);
+  }
+
   void DestroyProjectTile()
   {
     Destroy(gameObject);
