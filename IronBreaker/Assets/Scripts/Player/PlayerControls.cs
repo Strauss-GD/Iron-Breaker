@@ -37,18 +37,18 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Dash"",
+                    ""name"": ""Shot"",
                     ""type"": ""Button"",
-                    ""id"": ""12a6899a-1517-4cda-bd0e-6041007563f9"",
+                    ""id"": ""4f40b058-f28f-464a-a7ca-8753a83b4e96"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Shot"",
+                    ""name"": ""Dash"",
                     ""type"": ""Button"",
-                    ""id"": ""4f40b058-f28f-464a-a7ca-8753a83b4e96"",
+                    ""id"": ""12a6899a-1517-4cda-bd0e-6041007563f9"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -158,8 +158,8 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         // PC Player Action Map
         m_PCPlayerActionMap = asset.FindActionMap("PC Player Action Map", throwIfNotFound: true);
         m_PCPlayerActionMap_Move = m_PCPlayerActionMap.FindAction("Move", throwIfNotFound: true);
-        m_PCPlayerActionMap_Dash = m_PCPlayerActionMap.FindAction("Dash", throwIfNotFound: true);
         m_PCPlayerActionMap_Shot = m_PCPlayerActionMap.FindAction("Shot", throwIfNotFound: true);
+        m_PCPlayerActionMap_Dash = m_PCPlayerActionMap.FindAction("Dash", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -220,15 +220,15 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     private readonly InputActionMap m_PCPlayerActionMap;
     private IPCPlayerActionMapActions m_PCPlayerActionMapActionsCallbackInterface;
     private readonly InputAction m_PCPlayerActionMap_Move;
-    private readonly InputAction m_PCPlayerActionMap_Dash;
     private readonly InputAction m_PCPlayerActionMap_Shot;
+    private readonly InputAction m_PCPlayerActionMap_Dash;
     public struct PCPlayerActionMapActions
     {
         private @PlayerControls m_Wrapper;
         public PCPlayerActionMapActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_PCPlayerActionMap_Move;
-        public InputAction @Dash => m_Wrapper.m_PCPlayerActionMap_Dash;
         public InputAction @Shot => m_Wrapper.m_PCPlayerActionMap_Shot;
+        public InputAction @Dash => m_Wrapper.m_PCPlayerActionMap_Dash;
         public InputActionMap Get() { return m_Wrapper.m_PCPlayerActionMap; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -241,12 +241,12 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Move.started -= m_Wrapper.m_PCPlayerActionMapActionsCallbackInterface.OnMove;
                 @Move.performed -= m_Wrapper.m_PCPlayerActionMapActionsCallbackInterface.OnMove;
                 @Move.canceled -= m_Wrapper.m_PCPlayerActionMapActionsCallbackInterface.OnMove;
-                @Dash.started -= m_Wrapper.m_PCPlayerActionMapActionsCallbackInterface.OnDash;
-                @Dash.performed -= m_Wrapper.m_PCPlayerActionMapActionsCallbackInterface.OnDash;
-                @Dash.canceled -= m_Wrapper.m_PCPlayerActionMapActionsCallbackInterface.OnDash;
                 @Shot.started -= m_Wrapper.m_PCPlayerActionMapActionsCallbackInterface.OnShot;
                 @Shot.performed -= m_Wrapper.m_PCPlayerActionMapActionsCallbackInterface.OnShot;
                 @Shot.canceled -= m_Wrapper.m_PCPlayerActionMapActionsCallbackInterface.OnShot;
+                @Dash.started -= m_Wrapper.m_PCPlayerActionMapActionsCallbackInterface.OnDash;
+                @Dash.performed -= m_Wrapper.m_PCPlayerActionMapActionsCallbackInterface.OnDash;
+                @Dash.canceled -= m_Wrapper.m_PCPlayerActionMapActionsCallbackInterface.OnDash;
             }
             m_Wrapper.m_PCPlayerActionMapActionsCallbackInterface = instance;
             if (instance != null)
@@ -254,12 +254,12 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Move.started += instance.OnMove;
                 @Move.performed += instance.OnMove;
                 @Move.canceled += instance.OnMove;
-                @Dash.started += instance.OnDash;
-                @Dash.performed += instance.OnDash;
-                @Dash.canceled += instance.OnDash;
                 @Shot.started += instance.OnShot;
                 @Shot.performed += instance.OnShot;
                 @Shot.canceled += instance.OnShot;
+                @Dash.started += instance.OnDash;
+                @Dash.performed += instance.OnDash;
+                @Dash.canceled += instance.OnDash;
             }
         }
     }
@@ -276,7 +276,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     public interface IPCPlayerActionMapActions
     {
         void OnMove(InputAction.CallbackContext context);
-        void OnDash(InputAction.CallbackContext context);
         void OnShot(InputAction.CallbackContext context);
+        void OnDash(InputAction.CallbackContext context);
     }
 }

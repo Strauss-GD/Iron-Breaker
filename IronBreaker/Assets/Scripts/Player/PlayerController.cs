@@ -19,11 +19,15 @@ public class PlayerController : MonoBehaviour
   //Move
   public Vector2 movementInput { get; private set; }
 
+  //Direction
+  Vector3 dirVec;
+
   //Mouse Info
   Vector3 target;
 
   //Physics
   [SerializeField] private Rigidbody2D playerRigid;
+  GameObject scanObj;
 
   void Awake()
   {
@@ -42,11 +46,15 @@ public class PlayerController : MonoBehaviour
   {
     //RotationPlayer();
     PlayerAnimation();
+    GetDirection();
+    OnScan();
   }
 
   void FixedUpdate()
   {
     //AdjustPlayerFacingDirection();
+    Debug.DrawRay(playerRigid.position, dirVec * 0.7f, new Color(0, 1, 0));
+    OnSearch();
   }
 
   //Input System에 의한 이동
@@ -86,6 +94,37 @@ public class PlayerController : MonoBehaviour
     return target;
   }
 
+  //정면 확인
+  protected void GetDirection()
+  {
+    bool hDown = Input.GetButtonDown("Horizontal");
+    bool vDown = Input.GetButtonDown("Vertical");
+    //bool hUp = Input.GetButtonUp("Horizontal");
+    //bool vUp = Input.GetButtonUp("Vertical");
+
+    if (vDown && v == 1)       dirVec = Vector3.up;
+    else if (vDown && v == -1) dirVec = Vector3.down;
+    else if (hDown && h == -1) dirVec = Vector3.left;
+    else if (hDown && h == 1)  dirVec = Vector3.right;
+  }
+
+  //조사 탐색
+  void OnSearch()
+  {
+    RaycastHit2D rayHit = Physics2D.Raycast(playerRigid.position, dirVec, 0.7f, LayerMask.GetMask("Object"));
+
+    if(rayHit.collider != null)
+    {
+      scanObj = rayHit.collider.gameObject;
+    }
+    else scanObj = null;
+  }
+
+  void OnScan()
+  {
+    if (Input.GetButtonDown("Jump") && scanObj != null) Debug.Log("This is : " + scanObj.name);
+  }
+
   //마우스 방향으로 캐릭터 회전
   private void RotationPlayer()
   {
@@ -123,16 +162,7 @@ public class PlayerController : MonoBehaviour
   {
     h = Input.GetAxisRaw("Horizontal");
     v = Input.GetAxisRaw("Vertical");
-    /*
-    bool hDown = Input.GetButtonDown("Horizontal");
-    bool vDown = Input.GetButtonDown("Vertical");
-    bool hUp = Input.GetButtonUp("Horizontal");
-    bool vUp = Input.GetButtonUp("Vertical");
 
-    if (hDown || vUp) isHorizonMove = true;
-    else if (vDown || hUp) isHorizonMove = false;
-    else if (hUp || vUp) isHorizonMove = h != 0;
-    */
 
     if (anim.GetInteger("hAxisRaw") != h)
     {
@@ -146,6 +176,7 @@ public class PlayerController : MonoBehaviour
     }
     else anim.SetBool("isChange", false);
   }
+
 
 
 }

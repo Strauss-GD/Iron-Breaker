@@ -1,5 +1,5 @@
 {
-    "name": "PlayerController",
+    "name": "PlayerControls",
     "maps": [
         {
             "name": "PC Player Action Map",
@@ -15,18 +15,18 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Dash",
+                    "name": "Shot",
                     "type": "Button",
-                    "id": "12a6899a-1517-4cda-bd0e-6041007563f9",
+                    "id": "4f40b058-f28f-464a-a7ca-8753a83b4e96",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Shot",
+                    "name": "Dash",
                     "type": "Button",
-                    "id": "4f40b058-f28f-464a-a7ca-8753a83b4e96",
+                    "id": "12a6899a-1517-4cda-bd0e-6041007563f9",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
