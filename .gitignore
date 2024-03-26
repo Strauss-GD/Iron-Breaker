@@ -8,6 +8,7 @@
 **/[Rr]ecordings/
 **/[Uu]ser[Ss]ettings/
 
+
 # UserData TestingDirectory
 Assets/Data/
 
@@ -26,6 +27,7 @@ Assets/Data/
 *.mdb
 *.opendb
 *.VC.db
+*Font.asset
 
 *.lock
 *.ide

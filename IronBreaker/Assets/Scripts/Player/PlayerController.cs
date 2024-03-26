@@ -8,6 +8,8 @@ using UnityEngine.InputSystem.Interactions;
 [RequireComponent(typeof(Player))]
 public class PlayerController : MonoBehaviour
 {
+  [SerializeField] public GameManager GM;
+
   protected Player player;
   [SerializeField] Harpoon harpoon;
 
@@ -61,7 +63,7 @@ public class PlayerController : MonoBehaviour
   public void onMove(InputAction.CallbackContext context)
   {
     Vector2 input = context.ReadValue<Vector2>();
-    if (input != null)
+    if (input != null && !GM.isDialogUp)
     {
       movementInput = new Vector2(input.x, input.y);
       playerRigid.velocity = movementInput * player.MoveSpeed;
@@ -97,10 +99,10 @@ public class PlayerController : MonoBehaviour
   //정면 확인
   protected void GetDirection()
   {
-    bool hDown = Input.GetButtonDown("Horizontal");
-    bool vDown = Input.GetButtonDown("Vertical");
-    //bool hUp = Input.GetButtonUp("Horizontal");
-    //bool vUp = Input.GetButtonUp("Vertical");
+    bool hDown = GM.isDialogUp ? false : Input.GetButtonDown("Horizontal");
+    bool vDown = GM.isDialogUp ? false : Input.GetButtonDown("Vertical");
+    //bool hUp = GM.isDialogUp ? false : Input.GetButtonUp("Horizontal");
+    //bool vUp = GM.isDialogUp ? false : Input.GetButtonUp("Vertical");
 
     if (vDown && v == 1)       dirVec = Vector3.up;
     else if (vDown && v == -1) dirVec = Vector3.down;
@@ -111,7 +113,7 @@ public class PlayerController : MonoBehaviour
   //조사 탐색
   void OnSearch()
   {
-    RaycastHit2D rayHit = Physics2D.Raycast(playerRigid.position, dirVec, 0.7f, LayerMask.GetMask("Object"));
+    RaycastHit2D rayHit = Physics2D.Raycast(playerRigid.position, dirVec, 1.0f, LayerMask.GetMask("Object"));
 
     if(rayHit.collider != null)
     {
@@ -122,7 +124,7 @@ public class PlayerController : MonoBehaviour
 
   void OnScan()
   {
-    if (Input.GetButtonDown("Jump") && scanObj != null) Debug.Log("This is : " + scanObj.name);
+    if (Input.GetButtonDown("Jump") && scanObj != null) GM.Action(scanObj);
   }
 
   //마우스 방향으로 캐릭터 회전
@@ -160,8 +162,8 @@ public class PlayerController : MonoBehaviour
   //Animation
   void PlayerAnimation()
   {
-    h = Input.GetAxisRaw("Horizontal");
-    v = Input.GetAxisRaw("Vertical");
+    h = GM.isDialogUp ? 0 : Input.GetAxisRaw("Horizontal");
+    v = GM.isDialogUp ? 0 : Input.GetAxisRaw("Vertical");
 
 
     if (anim.GetInteger("hAxisRaw") != h)
