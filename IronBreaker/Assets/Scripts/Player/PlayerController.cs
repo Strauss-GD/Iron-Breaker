@@ -124,7 +124,7 @@ public class PlayerController : MonoBehaviour
 
   void OnScan()
   {
-    if (Input.GetButtonDown("Jump") && scanObj != null) GM.Action(scanObj);
+    if (Input.GetButtonDown("Jump") && scanObj != null) GM.DiaglogAction(scanObj);
   }
 
   //마우스 방향으로 캐릭터 회전
