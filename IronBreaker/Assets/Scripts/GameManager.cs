@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
 {
   //외부 스크립트
   public DialogManager DM; //다이얼로그 매니저
+  public QuestManager QM;  //퀘스트 매니저
 
   //다이얼로그 패널
   public GameObject dialogPanel;
@@ -18,6 +19,11 @@ public class GameManager : MonoBehaviour
   public GameObject scanObject;
   public bool isDialogUp; //다이어로그창이 떠있는지 아닌지
   public int dialogIndex;
+
+  void Start()
+  {
+    Debug.Log(QM.CheckQuest());
+  }
 
   //대화창 액션
   public void DiaglogAction(GameObject scanObj)
@@ -30,11 +36,15 @@ public class GameManager : MonoBehaviour
 
   void Talk(int id, bool isNpc)
   {
-    string dialogData = DM.GetDiaglog(id, dialogIndex);
-    if(dialogData == null) //대화내용이없을시 대화창 닫힘
+    //Set Dialog Data
+    int questDialogIndex = QM.GetQuestDialogIndex(id);
+    string dialogData = DM.GetDiaglog(id + questDialogIndex, dialogIndex);
+
+    if (dialogData == null) //대화내용이없을시 대화창 닫힘
     {
       isDialogUp = false;
       dialogIndex = 0;     //초기화
+      Debug.Log(QM.CheckQuest(id));
       return;
     }
 
@@ -49,6 +59,7 @@ public class GameManager : MonoBehaviour
     {
       dialogText.text = dialogData;
 
+      //초상화 투명
       portraitImg.color = new Color(1, 1, 1, 0);
     }
     isDialogUp = true;
