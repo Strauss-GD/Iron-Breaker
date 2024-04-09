@@ -67,5 +67,29 @@ public class TypingEffect : MonoBehaviour
     isTyping = false;
     EndCursor.SetActive(true);
   }
-
 }
+
+/* 코루틴으로 작동하게 변경 예정.
+  if (Input.GetKeyDown(KeyCode.LeftShift)) GetKey형식이 아닌, 버튼을 추가할 예정. boolean으로 조정
+          TypingManager.Instance.TypingSpeed = true;
+
+      if (Input.GetKeyUp(KeyCode.LeftShift))
+          TypingManager.Instance.TypingSpeed = false;
+
+
+  private IEnumerator TypingSpeedMethod()
+  {
+      while (coroutineStoper)
+      {
+          if (TypingSpeed)
+              CPSRepetition = CPSRepetitionMax;
+          else
+              CPSRepetition = CPSRepetitionMin;
+
+          Effecting();
+
+          yield return new WaitForSeconds(1f / CPSRepetition);
+
+      }
+  }
+ */

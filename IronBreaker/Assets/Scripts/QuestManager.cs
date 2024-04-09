@@ -60,7 +60,7 @@ public class QuestManager : MonoBehaviour
     questActionIndex = 0; //초기화
   }
 
-  void ControlObject()
+  public void ControlObject()
   {
     switch (questId)
     {
@@ -69,7 +69,8 @@ public class QuestManager : MonoBehaviour
         if (questActionIndex == 2) questObj[0].SetActive(true);
         break;
       case 20 :
-        if (questActionIndex == 1) questObj[0].SetActive(false);
+        if (questActionIndex == 0) questObj[0].SetActive(true);
+        else if (questActionIndex == 1) questObj[0].SetActive(false);
         break;
     }
   }
