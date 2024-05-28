@@ -124,6 +124,7 @@ public class PlayerController : MonoBehaviour
 
   void OnScan()
   {
+    //Cammand 명은 Jump이지만 Unity 기본 설정을 사용할뿐 Spacebar를 지칭함.
     if (Input.GetButtonDown("Jump") && scanObj != null) GM.DiaglogAction(scanObj);
   }
 
@@ -140,7 +141,7 @@ public class PlayerController : MonoBehaviour
   {
     if (context.performed) //Action type이 "button"일 경우 키가 눌렸는지 체크.
     {
-      //점프 로직
+      //달리기 로직
     }
   }
 
@@ -162,9 +163,9 @@ public class PlayerController : MonoBehaviour
   //Animation
   void PlayerAnimation()
   {
+    //대화중 움직임 제어
     h = GM.isDialogUp ? 0 : Input.GetAxisRaw("Horizontal");
     v = GM.isDialogUp ? 0 : Input.GetAxisRaw("Vertical");
-
 
     if (anim.GetInteger("hAxisRaw") != h)
     {
@@ -178,4 +179,6 @@ public class PlayerController : MonoBehaviour
     }
     else anim.SetBool("isChange", false);
   }
+
+
 }

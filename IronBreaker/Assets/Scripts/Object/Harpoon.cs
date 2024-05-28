@@ -12,6 +12,13 @@ public class Harpoon : MonoBehaviour
   //미개발 - 차징된 작살이 다르다면 사용할 예정 / 다르지않다면 사용X
   [SerializeField] private GameObject chargedProjectilePrefabs;
 
+  void Update()
+  {
+    Vector2 len = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+    float z = Mathf.Atan2(len.y, len.x) * Mathf.Rad2Deg;
+    transform.rotation = Quaternion.Euler(0, 0, z);
+  }
+
   public void CreateProjectile()
   {
     Instantiate(projectilePrefabs, firePoint.position, firePoint.rotation);
