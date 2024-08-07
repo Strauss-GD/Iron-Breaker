@@ -4,32 +4,39 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
 
-//이 스크립트에는 "입력 및 컨트롤"에 관한 내용들이 들어갑니다.
 [RequireComponent(typeof(Player))]
 public class PlayerController : MonoBehaviour
 {
   [SerializeField] public GameManager GM;
-
   protected Player player;
   [SerializeField] Harpoon harpoon;
 
-  //Animation
+  // Animation
   private SpriteRenderer mySpriteRender;
   Animator anim;
   float h, v;
 
-  //Move
+  // Move
   public Vector2 movementInput { get; private set; }
 
-  //Direction
-  Vector3 dirVec;
-
-  //Mouse Info
+  // Mouse Info
   Vector3 target;
 
-  //Physics
+  // Physics
   [SerializeField] private Rigidbody2D playerRigid;
   GameObject scanObj;
+
+  // Dash
+  private bool isDashing = false;
+  private float dashSpeed = 10f;
+  private float dashTime = 0.2f;
+  private Vector2 dashDirection;
+
+  // Input Actions
+  private PlayerControls playerInputActions;
+  private InputAction moveAction;
+  private InputAction shootAction;
+  private InputAction dashAction;
 
   void Awake()
   {
@@ -37,50 +44,79 @@ public class PlayerController : MonoBehaviour
     playerRigid = GetComponent<Rigidbody2D>();
     mySpriteRender = GetComponent<SpriteRenderer>();
     anim = GetComponent<Animator>();
+
+    // Input Actions 초기화
+    playerInputActions = new PlayerControls();
+    moveAction = playerInputActions.Player.Move;
+    shootAction = playerInputActions.Player.Shot;
+    dashAction = playerInputActions.Player.Dash;
+
+    // 이동 및 사격 이벤트 연결
+    moveAction.performed += OnMove;
+    moveAction.canceled += OnMove;
+    shootAction.performed += OnShot;
+    dashAction.performed += OnDash;
   }
 
-  void Start()
+  void OnEnable()
   {
-    
+    moveAction.Enable();
+    shootAction.Enable();
+    dashAction.Enable();
+  }
+
+  void OnDisable()
+  {
+    moveAction.Disable();
+    shootAction.Disable();
+    dashAction.Disable();
   }
 
   void Update()
   {
-    //RotationPlayer();
     PlayerAnimation();
-    GetDirection();
     OnScan();
   }
 
   void FixedUpdate()
   {
-    //AdjustPlayerFacingDirection();
-    Debug.DrawRay(playerRigid.position, dirVec * 0.7f, new Color(0, 1, 0));
+    if (!isDashing)
+    {
+      MovePlayer();
+    }
+    Debug.DrawRay(playerRigid.position, GetMouseWorldPosition() - transform.position, new Color(0, 1, 0));
     OnSearch();
   }
 
-  //Input System에 의한 이동
-  public void onMove(InputAction.CallbackContext context)
+  // Input System에 의한 이동
+  public void OnMove(InputAction.CallbackContext context)
   {
     Vector2 input = context.ReadValue<Vector2>();
-    if (input != null && !GM.isDialogUp)
+    if (!GM.isDialogUp && !isDashing)
     {
-      movementInput = new Vector2(input.x, input.y);
-      playerRigid.velocity = movementInput * player.MoveSpeed;
+      movementInput = input;
+    }
+    else
+    {
+      movementInput = Vector2.zero;
     }
   }
 
-  //Input System에 의한 사격과 차징 사격
-  public void onShot(InputAction.CallbackContext context)
+  // 플레이어 이동
+  private void MovePlayer()
+  {
+    playerRigid.velocity = movementInput * player.MoveSpeed;
+  }
+
+  // Input System에 의한 사격과 차징 사격
+  public void OnShot(InputAction.CallbackContext context)
   {
     if (context.performed)
     {
-      //차지 공격
       if (context.interaction is HoldInteraction)
       {
         harpoon.CreateChargedProjectile();
       }
-      //기본 공격
       else if (context.interaction is PressInteraction)
       {
         harpoon.CreateProjectile();
@@ -91,31 +127,18 @@ public class PlayerController : MonoBehaviour
   // 마우스 좌표 따기
   protected Vector3 GetMouseWorldPosition()
   {
-    Vector2 mousePos = Input.mousePosition;
-    Vector3 target = Camera.main.WorldToScreenPoint(mousePos);
-    return target;
+    Vector2 mousePos = Mouse.current.position.ReadValue();
+    Vector3 worldMousePos = Camera.main.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, Camera.main.nearClipPlane));
+    worldMousePos.z = 0;
+    return worldMousePos;
   }
 
-  //정면 확인
-  protected void GetDirection()
-  {
-    bool hDown = GM.isDialogUp ? false : Input.GetButtonDown("Horizontal");
-    bool vDown = GM.isDialogUp ? false : Input.GetButtonDown("Vertical");
-    //bool hUp = GM.isDialogUp ? false : Input.GetButtonUp("Horizontal");
-    //bool vUp = GM.isDialogUp ? false : Input.GetButtonUp("Vertical");
-
-    if (vDown && v == 1)       dirVec = Vector3.up;
-    else if (vDown && v == -1) dirVec = Vector3.down;
-    else if (hDown && h == -1) dirVec = Vector3.left;
-    else if (hDown && h == 1)  dirVec = Vector3.right;
-  }
-
-  //조사 탐색
+  // 조사 탐색
   void OnSearch()
   {
-    RaycastHit2D rayHit = Physics2D.Raycast(playerRigid.position, dirVec, 1.0f, LayerMask.GetMask("Object"));
+    RaycastHit2D rayHit = Physics2D.Raycast(playerRigid.position, GetMouseWorldPosition() - transform.position, 1.0f, LayerMask.GetMask("Object"));
 
-    if(rayHit.collider != null)
+    if (rayHit.collider != null)
     {
       scanObj = rayHit.collider.gameObject;
     }
@@ -124,46 +147,43 @@ public class PlayerController : MonoBehaviour
 
   void OnScan()
   {
-    //Cammand 명은 Jump이지만 Unity 기본 설정을 사용할뿐 Spacebar를 지칭함.
     if (Input.GetButtonDown("Jump") && scanObj != null) GM.DiaglogAction(scanObj);
   }
 
-  //마우스 방향으로 캐릭터 회전
-  private void RotationPlayer()
+  // 구르기 기능 구현
+  public void OnDash(InputAction.CallbackContext context)
   {
-    Vector2 newPos = GetMouseWorldPosition() - transform.position;
-    float rotZ = Mathf.Atan2(newPos.y, newPos.x) * Mathf.Rad2Deg;
-    transform.rotation = Quaternion.Euler(0, 0, rotZ);
-  }
-
-  //Input System에 의한 대쉬
-  public void onDash(InputAction.CallbackContext context)
-  {
-    if (context.performed) //Action type이 "button"일 경우 키가 눌렸는지 체크.
+    if (context.performed && !isDashing)
     {
-      //달리기 로직
+      StartCoroutine(Dash());
     }
   }
 
-  //마우스 방향에 따른 플레이어 대면 방향 조정(현재 사용안함)
-  private void AdjustPlayerFacingDirection()
+  private IEnumerator Dash()
   {
-    Vector3 mousePos = Input.mousePosition;
-    Vector3 target = Camera.main.WorldToScreenPoint(transform.position);
-    if(mousePos.x < target.x)
+    isDashing = true;
+    dashDirection = movementInput.normalized;
+
+    // 무적 상태 설정
+    player.SetInvincible(true);
+
+    float dashEndTime = Time.time + dashTime;
+
+    while (Time.time < dashEndTime)
     {
-      mySpriteRender.flipX = true;
+      playerRigid.velocity = dashDirection * dashSpeed;
+      yield return null;
     }
-    else
-    {
-      mySpriteRender.flipX = false;
-    }
+
+    // 무적 상태 해제
+    player.SetInvincible(false);
+
+    isDashing = false;
   }
 
-  //Animation
+  // Animation
   void PlayerAnimation()
   {
-    //대화중 움직임 제어
     h = GM.isDialogUp ? 0 : Input.GetAxisRaw("Horizontal");
     v = GM.isDialogUp ? 0 : Input.GetAxisRaw("Vertical");
 
@@ -179,6 +199,4 @@ public class PlayerController : MonoBehaviour
     }
     else anim.SetBool("isChange", false);
   }
-
-
 }

@@ -25,6 +25,34 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     ""maps"": [
         {
             ""name"": ""PC Player Action Map"",
+            ""id"": ""b32b5f41-5294-41ac-9c53-43b7de6f648c"",
+            ""actions"": [
+                {
+                    ""name"": ""New action"",
+                    ""type"": ""Button"",
+                    ""id"": ""76819ddd-a501-4113-95e6-1aa6a4fd857e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""3dfeaa9b-8fe2-4709-bcca-81c3682c0e63"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""New action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Player"",
             ""id"": ""762af1a0-53af-4fb4-ac30-ccea0ea5cce7"",
             ""actions"": [
                 {
@@ -157,9 +185,12 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
 }");
         // PC Player Action Map
         m_PCPlayerActionMap = asset.FindActionMap("PC Player Action Map", throwIfNotFound: true);
-        m_PCPlayerActionMap_Move = m_PCPlayerActionMap.FindAction("Move", throwIfNotFound: true);
-        m_PCPlayerActionMap_Shot = m_PCPlayerActionMap.FindAction("Shot", throwIfNotFound: true);
-        m_PCPlayerActionMap_Dash = m_PCPlayerActionMap.FindAction("Dash", throwIfNotFound: true);
+        m_PCPlayerActionMap_Newaction = m_PCPlayerActionMap.FindAction("New action", throwIfNotFound: true);
+        // Player
+        m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
+        m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
+        m_Player_Shot = m_Player.FindAction("Shot", throwIfNotFound: true);
+        m_Player_Dash = m_Player.FindAction("Dash", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -219,16 +250,12 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     // PC Player Action Map
     private readonly InputActionMap m_PCPlayerActionMap;
     private IPCPlayerActionMapActions m_PCPlayerActionMapActionsCallbackInterface;
-    private readonly InputAction m_PCPlayerActionMap_Move;
-    private readonly InputAction m_PCPlayerActionMap_Shot;
-    private readonly InputAction m_PCPlayerActionMap_Dash;
+    private readonly InputAction m_PCPlayerActionMap_Newaction;
     public struct PCPlayerActionMapActions
     {
         private @PlayerControls m_Wrapper;
         public PCPlayerActionMapActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Move => m_Wrapper.m_PCPlayerActionMap_Move;
-        public InputAction @Shot => m_Wrapper.m_PCPlayerActionMap_Shot;
-        public InputAction @Dash => m_Wrapper.m_PCPlayerActionMap_Dash;
+        public InputAction @Newaction => m_Wrapper.m_PCPlayerActionMap_Newaction;
         public InputActionMap Get() { return m_Wrapper.m_PCPlayerActionMap; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -238,17 +265,54 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         {
             if (m_Wrapper.m_PCPlayerActionMapActionsCallbackInterface != null)
             {
-                @Move.started -= m_Wrapper.m_PCPlayerActionMapActionsCallbackInterface.OnMove;
-                @Move.performed -= m_Wrapper.m_PCPlayerActionMapActionsCallbackInterface.OnMove;
-                @Move.canceled -= m_Wrapper.m_PCPlayerActionMapActionsCallbackInterface.OnMove;
-                @Shot.started -= m_Wrapper.m_PCPlayerActionMapActionsCallbackInterface.OnShot;
-                @Shot.performed -= m_Wrapper.m_PCPlayerActionMapActionsCallbackInterface.OnShot;
-                @Shot.canceled -= m_Wrapper.m_PCPlayerActionMapActionsCallbackInterface.OnShot;
-                @Dash.started -= m_Wrapper.m_PCPlayerActionMapActionsCallbackInterface.OnDash;
-                @Dash.performed -= m_Wrapper.m_PCPlayerActionMapActionsCallbackInterface.OnDash;
-                @Dash.canceled -= m_Wrapper.m_PCPlayerActionMapActionsCallbackInterface.OnDash;
+                @Newaction.started -= m_Wrapper.m_PCPlayerActionMapActionsCallbackInterface.OnNewaction;
+                @Newaction.performed -= m_Wrapper.m_PCPlayerActionMapActionsCallbackInterface.OnNewaction;
+                @Newaction.canceled -= m_Wrapper.m_PCPlayerActionMapActionsCallbackInterface.OnNewaction;
             }
             m_Wrapper.m_PCPlayerActionMapActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Newaction.started += instance.OnNewaction;
+                @Newaction.performed += instance.OnNewaction;
+                @Newaction.canceled += instance.OnNewaction;
+            }
+        }
+    }
+    public PCPlayerActionMapActions @PCPlayerActionMap => new PCPlayerActionMapActions(this);
+
+    // Player
+    private readonly InputActionMap m_Player;
+    private IPlayerActions m_PlayerActionsCallbackInterface;
+    private readonly InputAction m_Player_Move;
+    private readonly InputAction m_Player_Shot;
+    private readonly InputAction m_Player_Dash;
+    public struct PlayerActions
+    {
+        private @PlayerControls m_Wrapper;
+        public PlayerActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Move => m_Wrapper.m_Player_Move;
+        public InputAction @Shot => m_Wrapper.m_Player_Shot;
+        public InputAction @Dash => m_Wrapper.m_Player_Dash;
+        public InputActionMap Get() { return m_Wrapper.m_Player; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(PlayerActions set) { return set.Get(); }
+        public void SetCallbacks(IPlayerActions instance)
+        {
+            if (m_Wrapper.m_PlayerActionsCallbackInterface != null)
+            {
+                @Move.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMove;
+                @Move.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMove;
+                @Move.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMove;
+                @Shot.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShot;
+                @Shot.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShot;
+                @Shot.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShot;
+                @Dash.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDash;
+                @Dash.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDash;
+                @Dash.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDash;
+            }
+            m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
             {
                 @Move.started += instance.OnMove;
@@ -263,7 +327,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
             }
         }
     }
-    public PCPlayerActionMapActions @PCPlayerActionMap => new PCPlayerActionMapActions(this);
+    public PlayerActions @Player => new PlayerActions(this);
     private int m_PCSchemeIndex = -1;
     public InputControlScheme PCScheme
     {
@@ -274,6 +338,10 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         }
     }
     public interface IPCPlayerActionMapActions
+    {
+        void OnNewaction(InputAction.CallbackContext context);
+    }
+    public interface IPlayerActions
     {
         void OnMove(InputAction.CallbackContext context);
         void OnShot(InputAction.CallbackContext context);

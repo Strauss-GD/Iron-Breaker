@@ -3,6 +3,34 @@
     "maps": [
         {
             "name": "PC Player Action Map",
+            "id": "b32b5f41-5294-41ac-9c53-43b7de6f648c",
+            "actions": [
+                {
+                    "name": "New action",
+                    "type": "Button",
+                    "id": "76819ddd-a501-4113-95e6-1aa6a4fd857e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "3dfeaa9b-8fe2-4709-bcca-81c3682c0e63",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "New action",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Player",
             "id": "762af1a0-53af-4fb4-ac30-ccea0ea5cce7",
             "actions": [
                 {
