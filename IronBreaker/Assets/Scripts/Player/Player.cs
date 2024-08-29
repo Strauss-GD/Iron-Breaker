@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+  public static Player instance;
+
   public PlayerStats playerStats; // ScriptableObject 참조
 
   public float MaxHP { get { return playerStats.maxHP; } }
@@ -19,6 +21,15 @@ public class Player : MonoBehaviour
 
   void Awake()
   {
+    if (instance == null)
+    {
+      instance = this;
+      DontDestroyOnLoad(gameObject); // 이 오브젝트를 씬 전환 시 파괴되지 않도록 설정
+    }
+    else if (instance != this)
+    {
+      Destroy(gameObject); // 중복 생성 방지
+    }
     InitializeStats();
   }
 

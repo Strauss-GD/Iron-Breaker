@@ -6,6 +6,8 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
+  public static GameManager instance;
+
   //외부 스크립트
   public DialogManager DM; //다이얼로그 매니저
   public QuestManager QM;  //퀘스트 매니저
@@ -30,6 +32,19 @@ public class GameManager : MonoBehaviour
 
   //플레이어
   public Player player;
+
+  void Awake()
+  {
+    if (instance == null)
+    {
+      instance = this;
+      DontDestroyOnLoad(gameObject); // 이 오브젝트를 씬 전환 시 파괴되지 않도록 설정
+    }
+    else if (instance != this)
+    {
+      Destroy(gameObject); // 중복 생성 방지
+    }
+  }
 
   void Start()
   {
